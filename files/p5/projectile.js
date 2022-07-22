@@ -104,16 +104,69 @@ class Projectile {
     // Smoke trail
     if (this.isHit || this.target) {
       for (let s in this.smoke) {
+        // Add noise
         this.smoke[s].sub(
           random(-1, 1),
           random(this.vel.mag() < 150 ? 0 : -1, 1)
         );
         translate(this.smoke[s].x, this.smoke[s].y);
+
         if (this.target) {
+          // Draw at bottom of rocket
           rotate(this.vel.heading() + radians(180));
-          translate(20, 0);
+          translate(15, 0);
         }
-        stroke(map(s, 0, this.smoke.length - 1, 60, 50));
+
+        // Rocket before hit
+        if (this.target && this.isHit) {
+          // Normal smoke
+          stroke(map(s, 0, this.smoke.length - 1, 60, 50));
+        }
+        // Firey smoke
+        else {
+          // Red flames to smoke
+          if (s < (7 * this.smoke.length) / 9) {
+            stroke(
+              lerpColor(
+                color(255, 0, 0),
+                color(60),
+                map(
+                  s,
+                  (6 * this.smoke.length) / 9,
+                  (7 * this.smoke.length) / 9,
+                  1,
+                  0
+                )
+              )
+            );
+          }
+          // Orange to red flames
+          else if (s < (8 * this.smoke.length) / 9) {
+            stroke(
+              lerpColor(
+                color(255, 122, 0),
+                color(255, 0, 0),
+                map(
+                  s,
+                  (7 * this.smoke.length) / 9,
+                  (8 * this.smoke.length) / 9,
+                  1,
+                  0
+                )
+              )
+            );
+          }
+          // Yellow to red flames
+          else {
+            stroke(
+              lerpColor(
+                color(255, 255, 0),
+                color(255, 122, 0),
+                map(s, (8 * this.smoke.length) / 9, this.smoke.length, 1, 0)
+              )
+            );
+          }
+        }
         strokeWeight(map(s, 0, this.smoke.length - 1, 5, 20));
         point(0, 0);
         resetMatrix();
@@ -126,23 +179,11 @@ class Projectile {
       translate(this.pos.x, this.pos.y);
       rotate(this.vel.heading() + radians(180));
 
-      // Flames
+      // Flames glow
       if (!this.isHit) {
         strokeWeight(25);
-        stroke(255, random(10, 30));
-        point(25, 0);
-
-        strokeWeight(5);
-        stroke(255, 0, 0);
-        point(25, 0);
-
-        strokeWeight(7);
-        stroke(255, 122, 0);
+        stroke(255, random(50, 100));
         point(20, 0);
-
-        strokeWeight(10);
-        stroke(255, 255, 0);
-        point(15, 0);
       }
 
       // Body
@@ -205,26 +246,16 @@ class Projectile {
         point(this.vel.x, this.vel.y);
         resetMatrix();
       }
-      // Explosion
+
       if (this.isHit) {
-        stroke(255, 0, 0, random(150, 255));
-        strokeWeight(20);
-        point(this.pos);
-
-        stroke(255, 165, 0, random(200, 255));
-        strokeWeight(10);
-        point(this.pos);
-
-        stroke(255, 255, 0);
-        strokeWeight(5);
-        point(this.pos);
-      }
-      // Normal
-      else {
+        // Hit
+        stroke(122);
+      } else {
+        // Normal
         stroke(255);
-        strokeWeight(10);
-        point(this.pos);
       }
+      strokeWeight(10);
+      point(this.pos);
     }
     resetMatrix();
   }
