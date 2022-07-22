@@ -29,8 +29,23 @@ class Projectile {
       if (this.pos.dist(this.target.pos) < 10 && !this.isHit) {
         this.isHit = true;
         this.target.isHit = true;
-        this.vel.add(this.target.vel);
-        this.vel.div(2);
+
+        fill(255, 20);
+        rect(0, 0, width, height);
+
+        let momentum_i = this.vel.mag() + this.target.vel.mag();
+
+        let dotVect = createVector(
+          rocket.vel.dot(this.target.vel) / this.target.vel.mag(),
+          0
+        ).setHeading(this.target.vel.heading());
+
+        this.vel
+          .add(dotVect)
+          .limit(momentum_i - this.target.vel.mag())
+          .mult(1, 0.75);
+
+        this.target.vel.div(2);
       }
 
       // Error
@@ -68,7 +83,7 @@ class Projectile {
       this.smoke.shift(25 - this.smoke.length);
     }
 
-    // Hit
+    // Hit specific movement
     if (this.isHit) {
       if (this.target) {
         this.acc.set(0, 0);
