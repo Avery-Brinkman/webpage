@@ -5,14 +5,14 @@ let P_GAIN, I_GAIN, D_GAIN, INT_SATURATION, POWER, DEBUG_MODE;
 
 function makeP() {
   target = new Projectile(
-    createVector(1900, 900),
+    createVector(width, height),
     createVector(200, 0).setHeading(radians(random(-165, -135))), // 200
     createVector(0, 0),
-    500,
+    500
   );
 
   rocket = new Projectile(
-    createVector(900, 900),
+    createVector(width / 2, height),
     createVector(0, 0),
     createVector(0, 0),
     500
@@ -20,7 +20,7 @@ function makeP() {
 }
 
 function setup() {
-  createCanvas(1900, 900);
+  createCanvas(windowWidth, windowHeight);
 
   makeP();
 

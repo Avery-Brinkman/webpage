@@ -42,10 +42,7 @@ class Projectile {
       this.intStored.add(err.copy());
       this.intStored.setMag(
         Math.min(
-          Math.max(
-            this.intStored.mag(),
-            -1 * float(INT_SATURATION.value())
-          ),
+          Math.max(this.intStored.mag(), -1 * float(INT_SATURATION.value())),
           float(INT_SATURATION.value())
         )
       );
@@ -65,8 +62,7 @@ class Projectile {
     }
 
     // Smoke
-    if (this.target || this.isHit)
-      this.smoke.push(this.pos.copy());
+    if (this.target || this.isHit) this.smoke.push(this.pos.copy());
     if (this.smoke.length > 25) {
       this.smoke.shift(25 - this.smoke.length);
     }
@@ -75,28 +71,31 @@ class Projectile {
     if (this.isHit) {
       if (this.target) {
         this.acc.set(0, 0);
-        if (this.pos.y > 895) {
-          this.pos.set(this.pos.x, 895);
+        if (this.pos.y > height - 5) {
+          this.pos.set(this.pos.x, height - 5);
           this.vel.mult(0.6, -0.25);
         }
-      } else if (this.pos.y > 890) {
-        this.pos.set(this.pos.x, 890);
+      } else if (this.pos.y > height - 10) {
+        this.pos.set(this.pos.x, height - 10);
         this.vel.mult(0.75, -0.5);
       }
     }
 
     // Motion
-    this.vel.add(this.acc.copy().mult(TIME_SCALE)).limit(this.maxVel).add(0, 9.8 * TIME_SCALE);
+    this.vel
+      .add(this.acc.copy().mult(TIME_SCALE))
+      .limit(this.maxVel)
+      .add(0, 9.8 * TIME_SCALE);
     this.pos.add(this.vel.copy().mult(TIME_SCALE));
 
     // Edges
-    if (this.pos.x < 0 || this.pos.x > 1900) {
+    if (this.pos.x < 0 || this.pos.x > width) {
       this.vel.mult(-1, 1);
-      this.pos.set(this.pos.x < 0 ? 1 : 1900, this.pos.y);
+      this.pos.set(this.pos.x < 0 ? 0 : width, this.pos.y);
     }
-    if (this.pos.y > 900) {
+    if (this.pos.y > height) {
       this.vel.mult(1, -1);
-      this.pos.set(this.pos.x, 900);
+      this.pos.set(this.pos.x, height);
     }
   }
 
@@ -104,7 +103,10 @@ class Projectile {
     // Smoke trail
     if (this.isHit || this.target) {
       for (let s in this.smoke) {
-        this.smoke[s].sub(random(-1, 1), random(this.vel.mag() < 150 ? 0 : -1, 1));
+        this.smoke[s].sub(
+          random(-1, 1),
+          random(this.vel.mag() < 150 ? 0 : -1, 1)
+        );
         translate(this.smoke[s].x, this.smoke[s].y);
         if (this.target) {
           rotate(this.vel.heading() + radians(180));
@@ -215,7 +217,6 @@ class Projectile {
         stroke(255, 255, 0);
         strokeWeight(5);
         point(this.pos);
-
       }
       // Normal
       else {
