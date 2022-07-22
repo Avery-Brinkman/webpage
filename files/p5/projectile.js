@@ -1,3 +1,4 @@
+/// <reference path="./node_modules/@types/p5/global.d.ts"/>
 class Projectile {
   constructor(pos_i, vel_i, acc_i, maxSpeed, target = null) {
     this.pos = pos_i;

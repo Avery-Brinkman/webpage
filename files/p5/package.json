@@ -1,0 +1,20 @@
+{
+  "name": "pid_demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sketch.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Avery-Brinkman/home/",
+    "directory": "files/p5"
+  },
+  "homepage": "https://avery-brinkman.github.io/home/missileLaunch.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Avery Brinkman",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/p5": "^1.4.2"
+  }
+}

@@ -1,3 +1,4 @@
+/// <reference path="./node_modules/@types/p5/global.d.ts"/>
 const TIME_SCALE = 0.03;
 let target, rocket;
 
