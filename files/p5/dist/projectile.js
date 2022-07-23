@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Projectile = void 0;
 const p5_1 = require("p5");
-const p5 = require("../node_modules/p5/lib/p5");
 const TIME_SCALE = 0.03;
 class Projectile {
     constructor(pos_i, vel_i, acc_i, maxSpeed, target) {
@@ -36,7 +35,7 @@ class Projectile {
                 // fill(255, 20);
                 // rect(0, 0, this.displayWidth, this.displayHeight);
                 let momentum_i = this.vel.mag() + this.target.vel.mag();
-                let dotVect = new p5.Vector(this.vel.dot(this.target.vel) / this.target.vel.mag(), 0).setHeading(this.target.vel.heading());
+                let dotVect = new p5_1.Vector(this.vel.dot(this.target.vel) / this.target.vel.mag(), 0).setHeading(this.target.vel.heading());
                 this.vel
                     .add(dotVect)
                     .limit(momentum_i - this.target.vel.mag())
@@ -102,34 +101,34 @@ class Projectile {
         if (this.isHit || this.target) {
             for (const [index, smokeParticle] of this.smoke.entries()) {
                 // Add noise
-                smokeParticle.sub(p5.random(-1, 1), p5.random(this.vel.mag() < 150 ? 0 : -1, 1));
+                smokeParticle.sub(canvas.random(-1, 1), canvas.random(this.vel.mag() < 150 ? 0 : -1, 1));
                 canvas.translate(smokeParticle.x, smokeParticle.y);
                 if (this.target) {
                     // Draw at bottom of rocket
-                    canvas.rotate(this.vel.heading() + p5.radians(180));
+                    canvas.rotate(this.vel.heading() + canvas.radians(180));
                     canvas.translate(15, 0);
                 }
                 // Rocket before hit
                 if (this.target && this.isHit) {
                     // Normal smoke
-                    canvas.stroke(p5.map(index, 0, this.smoke.length - 1, 60, 50));
+                    canvas.stroke(canvas.map(index, 0, this.smoke.length - 1, 60, 50));
                 }
                 // Firey smoke
                 else {
                     // Red flames to smoke
                     if (index < (7 * this.smoke.length) / 9) {
-                        canvas.stroke(p5.lerpColor(p5.color(255, 0, 0), p5.color(60), p5.map(index, (6 * this.smoke.length) / 9, (7 * this.smoke.length) / 9, 1, 0)));
+                        canvas.stroke(canvas.lerpColor(canvas.color(255, 0, 0), canvas.color(60), canvas.map(index, (6 * this.smoke.length) / 9, (7 * this.smoke.length) / 9, 1, 0)));
                     }
                     // Orange to red flames
                     else if (index < (8 * this.smoke.length) / 9) {
-                        canvas.stroke(p5.lerpColor(p5.color(255, 122, 0), p5.color(255, 0, 0), p5.map(index, (7 * this.smoke.length) / 9, (8 * this.smoke.length) / 9, 1, 0)));
+                        canvas.stroke(canvas.lerpColor(canvas.color(255, 122, 0), canvas.color(255, 0, 0), canvas.map(index, (7 * this.smoke.length) / 9, (8 * this.smoke.length) / 9, 1, 0)));
                     }
                     // Yellow to red flames
                     else {
-                        canvas.stroke(p5.lerpColor(p5.color(255, 255, 0), p5.color(255, 122, 0), p5.map(index, (8 * this.smoke.length) / 9, this.smoke.length, 1, 0)));
+                        canvas.stroke(canvas.lerpColor(canvas.color(255, 255, 0), canvas.color(255, 122, 0), canvas.map(index, (8 * this.smoke.length) / 9, this.smoke.length, 1, 0)));
                     }
                 }
-                canvas.strokeWeight(p5.map(index, 0, this.smoke.length - 1, 5, 20));
+                canvas.strokeWeight(canvas.map(index, 0, this.smoke.length - 1, 5, 20));
                 canvas.point(0, 0);
                 canvas.resetMatrix();
             }
@@ -138,11 +137,11 @@ class Projectile {
         // Draw rocket
         if (this.target) {
             canvas.translate(this.pos.x, this.pos.y);
-            canvas.rotate(this.vel.heading() + p5.radians(180));
+            canvas.rotate(this.vel.heading() + canvas.radians(180));
             // Flames glow
             if (!this.isHit) {
                 canvas.strokeWeight(25);
-                canvas.stroke(255, p5.random(50, 100));
+                canvas.stroke(255, canvas.random(50, 100));
                 canvas.point(20, 0);
             }
             // Body

@@ -1,5 +1,4 @@
-import { Vector, p5InstanceExtensions, Color } from "p5";
-import * as p5 from "../node_modules/p5/lib/p5";
+import { Vector } from "p5";
 
 const TIME_SCALE = 0.03;
 
@@ -74,7 +73,7 @@ export class Projectile {
 
         let momentum_i = this.vel.mag() + this.target.vel.mag();
 
-        let dotVect = new p5.Vector(
+        let dotVect = new Vector(
           this.vel.dot(this.target.vel) / this.target.vel.mag(),
           0
         ).setHeading(this.target.vel.heading());
@@ -160,31 +159,31 @@ export class Projectile {
       for (const [index, smokeParticle] of this.smoke.entries()) {
         // Add noise
         smokeParticle.sub(
-          p5.random(-1, 1),
-          p5.random(this.vel.mag() < 150 ? 0 : -1, 1)
+          canvas.random(-1, 1),
+          canvas.random(this.vel.mag() < 150 ? 0 : -1, 1)
         );
         canvas.translate(smokeParticle.x, smokeParticle.y);
 
         if (this.target) {
           // Draw at bottom of rocket
-          canvas.rotate(this.vel.heading() + p5.radians(180));
+          canvas.rotate(this.vel.heading() + canvas.radians(180));
           canvas.translate(15, 0);
         }
 
         // Rocket before hit
         if (this.target && this.isHit) {
           // Normal smoke
-          canvas.stroke(p5.map(index, 0, this.smoke.length - 1, 60, 50));
+          canvas.stroke(canvas.map(index, 0, this.smoke.length - 1, 60, 50));
         }
         // Firey smoke
         else {
           // Red flames to smoke
           if (index < (7 * this.smoke.length) / 9) {
             canvas.stroke(
-              p5.lerpColor(
-                p5.color(255, 0, 0),
-                p5.color(60),
-                p5.map(
+              canvas.lerpColor(
+                canvas.color(255, 0, 0),
+                canvas.color(60),
+                canvas.map(
                   index,
                   (6 * this.smoke.length) / 9,
                   (7 * this.smoke.length) / 9,
@@ -197,10 +196,10 @@ export class Projectile {
           // Orange to red flames
           else if (index < (8 * this.smoke.length) / 9) {
             canvas.stroke(
-              p5.lerpColor(
-                p5.color(255, 122, 0),
-                p5.color(255, 0, 0),
-                p5.map(
+              canvas.lerpColor(
+                canvas.color(255, 122, 0),
+                canvas.color(255, 0, 0),
+                canvas.map(
                   index,
                   (7 * this.smoke.length) / 9,
                   (8 * this.smoke.length) / 9,
@@ -213,10 +212,10 @@ export class Projectile {
           // Yellow to red flames
           else {
             canvas.stroke(
-              p5.lerpColor(
-                p5.color(255, 255, 0),
-                p5.color(255, 122, 0),
-                p5.map(
+              canvas.lerpColor(
+                canvas.color(255, 255, 0),
+                canvas.color(255, 122, 0),
+                canvas.map(
                   index,
                   (8 * this.smoke.length) / 9,
                   this.smoke.length,
@@ -227,7 +226,7 @@ export class Projectile {
             );
           }
         }
-        canvas.strokeWeight(p5.map(index, 0, this.smoke.length - 1, 5, 20));
+        canvas.strokeWeight(canvas.map(index, 0, this.smoke.length - 1, 5, 20));
         canvas.point(0, 0);
         canvas.resetMatrix();
       }
@@ -237,12 +236,12 @@ export class Projectile {
     // Draw rocket
     if (this.target) {
       canvas.translate(this.pos.x, this.pos.y);
-      canvas.rotate(this.vel.heading() + p5.radians(180));
+      canvas.rotate(this.vel.heading() + canvas.radians(180));
 
       // Flames glow
       if (!this.isHit) {
         canvas.strokeWeight(25);
-        canvas.stroke(255, p5.random(50, 100));
+        canvas.stroke(255, canvas.random(50, 100));
         canvas.point(20, 0);
       }
 
