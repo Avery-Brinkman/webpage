@@ -2,7 +2,7 @@
 import { Projectile } from "./projectile";
 import * as p5 from "p5";
 
-let myp5 = new p5((sketch) => {
+let myp5: p5 = new p5((sketch) => {
   let target: Projectile, rocket: Projectile;
 
   let P_GAIN: Element,
@@ -35,28 +35,32 @@ let myp5 = new p5((sketch) => {
   }
 
   function applyInputs(): void {
-    // rocket.P_GAIN = Number(P_GAIN.value());
-    // rocket.I_GAIN = Number(I_GAIN.value());
-    // rocket.D_GAIN = Number(D_GAIN.value());
-    // rocket.INT_SATURATION = Number(INT_SATURATION.value());
-    // rocket.POWER = Number(POWER.value());
-    // rocket.DEBUG_MODE = Boolean(DEBUG_MODE.value());
-    // target.DEBUG_MODE = Boolean(DEBUG_MODE.value());
+    let input: HTMLInputElement;
+
+    input = document.getElementById("P_GAIN") as HTMLInputElement;
+    rocket.P_GAIN = Number(input.value);
+    input = document.getElementById("I_GAIN") as HTMLInputElement;
+    rocket.I_GAIN = Number(input.value);
+    input = document.getElementById("D_GAIN") as HTMLInputElement;
+    rocket.D_GAIN = Number(input.value);
+    input = document.getElementById("INT_SATURATION") as HTMLInputElement;
+    rocket.INT_SATURATION = Number(input.value);
+    input = document.getElementById("POWER") as HTMLInputElement;
+    rocket.POWER = Number(input.value);
+    input = document.getElementById("DEBUG_MODE") as HTMLInputElement;
+    rocket.DEBUG_MODE = Boolean(input.checked);
+    input = document.getElementById("DEBUG_MODE") as HTMLInputElement;
+    target.DEBUG_MODE = Boolean(input.checked);
   }
 
   sketch.setup = () => {
     sketch.createCanvas(sketch.windowWidth, sketch.windowHeight);
 
-    P_GAIN = sketch.createInput("1", "number").position(140, 0).size(40);
-    I_GAIN = sketch.createInput("7", "number").position(140, 20).size(40);
-    D_GAIN = sketch.createInput("56", "number").position(140, 40).size(40);
-    INT_SATURATION = sketch
-      .createInput("9", "number")
-      .position(140, 60)
-      .size(40);
-    POWER = sketch.createInput("1000", "number").position(140, 80).size(40);
-    DEBUG_MODE = sketch.createCheckbox("Show Vectors", false).position(0, 120);
-    sketch.createButton("Reset").position(137, 120).mousePressed(makeP);
+    sketch
+      .createButton("Reset")
+      .id("RESET")
+      .position(137, 120)
+      .mousePressed(makeP);
 
     makeP();
     applyInputs();
@@ -68,17 +72,7 @@ let myp5 = new p5((sketch) => {
     sketch.fill(200, 150);
     sketch.rect(0, 0, 190, 143);
 
-    sketch.textSize(15);
-    sketch.fill(0);
-    sketch.noStroke();
-    sketch.textAlign(sketch.LEFT, sketch.TOP);
-    sketch.text("P_GAIN", 0, 0);
-    sketch.text("I_GAIN", 0, 20);
-    sketch.text("D_GAIN", 0, 40);
-    sketch.text("INT_SATURATIONS", 0, 60);
-    sketch.text("POWER", 0, 80);
-
-    // applyInputs();
+    applyInputs();
 
     target.update();
     rocket.update();
